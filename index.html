@@ -14,12 +14,107 @@ body{background:var(--bg);color:var(--white);font-family:'Space Grotesk',sans-se
 #cur{position:fixed;width:12px;height:12px;border-radius:50%;background:var(--accent);pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .18s,height .18s;mix-blend-mode:screen;}
 #cur-ring{position:fixed;width:38px;height:38px;border-radius:50%;border:1.5px solid rgba(108,99,255,.5);pointer-events:none;z-index:9998;transform:translate(-50%,-50%);}
 nav,section,.mq,footer{position:relative;z-index:2;}
-nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1.3rem 3.5rem;background:linear-gradient(to bottom,rgba(4,5,10,.98) 60%,transparent);}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:1.3rem 3.5rem;
+  background:rgba(4,5,10,.96);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(15,20,40,.8);
+}
 .logo{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:.12em;color:var(--white);}
 .logo em{color:var(--accent);font-style:normal;}
 .nav-links{display:flex;gap:2rem;list-style:none;}
 .nav-links a{color:var(--dim);text-decoration:none;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;font-weight:500;transition:color .2s;}
 .nav-links a:hover{color:var(--accent);}
+
+/* ── HAMBURGER ── */
+.hamburger{
+  display:none;
+  flex-direction:column;
+  gap:5px;
+  cursor:pointer;
+  padding:6px;
+  z-index:1100;
+  background:none;border:none;
+}
+.hamburger span{
+  display:block;width:24px;height:2px;
+  background:var(--white);border-radius:2px;
+  transition:all .3s cubic-bezier(.4,0,.2,1);
+}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0);}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
+/* ── MOBILE NAV DRAWER ── */
+.mobile-nav{
+  display:none;
+  position:fixed;
+  top:0;right:0;
+  width:72vw;max-width:280px;
+  height:100vh;
+  background:rgba(6,7,18,.97);
+  backdrop-filter:blur(28px);
+  -webkit-backdrop-filter:blur(28px);
+  border-left:1px solid rgba(108,99,255,.12);
+  z-index:999;
+  flex-direction:column;
+  justify-content:center;
+  padding:2.5rem 2rem;
+  gap:0;
+  transform:translateX(100%);
+  transition:transform .32s cubic-bezier(.4,0,.2,1);
+}
+.mobile-nav.open{display:flex;transform:translateX(0);}
+.mobile-nav-overlay{
+  display:none;
+  position:fixed;inset:0;
+  background:rgba(0,0,0,.55);
+  z-index:998;
+  backdrop-filter:blur(2px);
+}
+.mobile-nav-overlay.open{display:block;}
+.mobile-nav a{
+  color:var(--dim);
+  text-decoration:none;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.72rem;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  font-weight:500;
+  padding:.95rem 0;
+  border-bottom:1px solid rgba(255,255,255,.04);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  transition:color .2s, padding-left .2s;
+}
+.mobile-nav a:last-child{border-bottom:none;}
+.mobile-nav a::after{content:'↗';font-size:.6rem;opacity:0;transition:opacity .2s,transform .2s;transform:translate(-4px,4px);}
+.mobile-nav a:hover{color:var(--accent);padding-left:.5rem;}
+.mobile-nav a:hover::after{opacity:1;transform:translate(0,0);}
+.mobile-nav-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.52rem;
+  color:rgba(108,99,255,.5);
+  letter-spacing:.3em;
+  text-transform:uppercase;
+  margin-bottom:1.5rem;
+}
+.mobile-nav-footer{
+  margin-top:2.5rem;
+  padding-top:1.5rem;
+  border-top:1px solid rgba(255,255,255,.04);
+  font-family:'JetBrains Mono',monospace;
+  font-size:.52rem;
+  color:#1e2540;
+  letter-spacing:.1em;
+}
+
 .hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;position:relative;}
 .hero-left{display:flex;flex-direction:column;justify-content:center;padding:9rem 3.5rem 4rem;}
 .role-badge{display:inline-flex;align-items:center;gap:.75rem;font-family:'JetBrains Mono',monospace;font-size:.63rem;color:var(--accent);letter-spacing:.25em;text-transform:uppercase;margin-bottom:1.8rem;opacity:0;animation:rise .5s .2s forwards;}
@@ -118,230 +213,43 @@ section{padding:6rem 3.5rem;}
 .sk-name{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:var(--white);margin-bottom:.8rem;letter-spacing:.06em;}
 .sk-tags{display:flex;flex-wrap:wrap;gap:.33rem;}
 .sk-tag{font-size:.57rem;font-family:'JetBrains Mono',monospace;letter-spacing:.08em;padding:.22rem .5rem;border:1px solid var(--border);color:var(--dim);}
-
-/* ════════════════════════════════════════
-   PROJECTS SECTION — UPGRADED
-════════════════════════════════════════ */
 .projects{background:rgba(4,5,10,.88);}
-
-/* Grid: 2 cols, featured card spans full width */
-.pj-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:20px;
-}
-
-/* Base card */
-.pj-card{
-  position:relative;
-  overflow:hidden;
-  border:1px solid var(--border);
-  border-radius:4px;
-  background:rgba(8,10,22,.95);
-  cursor:none;
-  transition:border-color .35s ease, transform .35s cubic-bezier(.22,1,.36,1), box-shadow .35s ease;
-}
-
-.pj-card:hover{
-  border-color:rgba(108,99,255,.45);
-  transform:translateY(-5px);
-  box-shadow:0 24px 60px rgba(0,0,0,.5), 0 0 40px rgba(108,99,255,.06);
-}
-
-/* Top glint on hover */
-.pj-card::before{
-  content:'';
-  position:absolute;
-  top:0;left:8%;right:8%;
-  height:1px;
-  background:linear-gradient(90deg,transparent,var(--accent),transparent);
-  opacity:0;
-  transition:opacity .35s;
-  z-index:10;
-}
+.pj-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;}
+.pj-card{position:relative;overflow:hidden;border:1px solid var(--border);border-radius:4px;background:rgba(8,10,22,.95);cursor:none;transition:border-color .35s ease,transform .35s cubic-bezier(.22,1,.36,1),box-shadow .35s ease;}
+.pj-card:hover{border-color:rgba(108,99,255,.45);transform:translateY(-5px);box-shadow:0 24px 60px rgba(0,0,0,.5),0 0 40px rgba(108,99,255,.06);}
+.pj-card::before{content:'';position:absolute;top:0;left:8%;right:8%;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:0;transition:opacity .35s;z-index:10;}
 .pj-card:hover::before{opacity:1;}
-
-/* Featured: first card spans full width, split layout */
-.pj-card.pj-featured{
-  grid-column:1 / -1;
-  display:grid;
-  grid-template-columns:1.15fr 1fr;
-  min-height:340px;
-}
-
-/* ── Preview pane ── */
-.pj-preview{
-  position:relative;
-  height:260px;
-  overflow:hidden;
-  background:#060810;
-  flex-shrink:0;
-}
-
-.pj-card.pj-featured .pj-preview{
-  height:auto;
-  min-height:340px;
-}
-
-.pj-preview-inner{
-  width:100%;height:100%;
-  transition:transform .6s cubic-bezier(.22,1,.36,1);
-}
+.pj-card.pj-featured{grid-column:1 / -1;display:grid;grid-template-columns:1.15fr 1fr;min-height:340px;}
+.pj-preview{position:relative;height:260px;overflow:hidden;background:#060810;flex-shrink:0;}
+.pj-card.pj-featured .pj-preview{height:auto;min-height:340px;}
+.pj-preview-inner{width:100%;height:100%;transition:transform .6s cubic-bezier(.22,1,.36,1);}
 .pj-card:hover .pj-preview-inner{transform:scale(1.03);}
-
-/* Right-edge fade for featured */
-.pj-card.pj-featured .pj-preview::after{
-  content:'';
-  position:absolute;
-  top:0;right:0;
-  width:70px;height:100%;
-  background:linear-gradient(90deg,transparent,rgba(8,10,22,.95));
-  pointer-events:none;
-  z-index:2;
-}
-
-/* Bottom fade for normal cards */
-.pj-card:not(.pj-featured) .pj-preview::after{
-  content:'';
-  position:absolute;
-  bottom:0;left:0;right:0;
-  height:50px;
-  background:linear-gradient(transparent,rgba(8,10,22,.95));
-  pointer-events:none;
-  z-index:2;
-}
-
-/* ── Info pane ── */
-.pj-info{
-  padding:26px 30px;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  gap:12px;
-}
-
-.pj-card.pj-featured .pj-info{
-  padding:36px 42px;
-}
-
-.pj-num{
-  font-family:'JetBrains Mono',monospace;
-  font-size:.57rem;
-  color:var(--accent);
-  letter-spacing:.22em;
-  text-transform:uppercase;
-}
-
-.pj-name{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:1.9rem;
-  color:var(--white);
-  letter-spacing:.04em;
-  line-height:1;
-}
-
+.pj-card.pj-featured .pj-preview::after{content:'';position:absolute;top:0;right:0;width:70px;height:100%;background:linear-gradient(90deg,transparent,rgba(8,10,22,.95));pointer-events:none;z-index:2;}
+.pj-card:not(.pj-featured) .pj-preview::after{content:'';position:absolute;bottom:0;left:0;right:0;height:50px;background:linear-gradient(transparent,rgba(8,10,22,.95));pointer-events:none;z-index:2;}
+.pj-info{padding:26px 30px;display:flex;flex-direction:column;justify-content:center;gap:12px;}
+.pj-card.pj-featured .pj-info{padding:36px 42px;}
+.pj-num{font-family:'JetBrains Mono',monospace;font-size:.57rem;color:var(--accent);letter-spacing:.22em;text-transform:uppercase;}
+.pj-name{font-family:'Bebas Neue',sans-serif;font-size:1.9rem;color:var(--white);letter-spacing:.04em;line-height:1;}
 .pj-card.pj-featured .pj-name{font-size:2.6rem;}
-
-.pj-stack{
-  font-family:'JetBrains Mono',monospace;
-  font-size:.57rem;
-  color:var(--cyan);
-  letter-spacing:.1em;
-}
-
-.pj-desc{
-  font-size:.8rem;
-  line-height:1.8;
-  color:var(--dim);
-  font-weight:300;
-}
-
-.pj-tags{
-  display:flex;
-  flex-wrap:wrap;
-  gap:5px;
-}
-
-.pj-tag{
-  font-size:.55rem;
-  font-family:'JetBrains Mono',monospace;
-  letter-spacing:.08em;
-  padding:.22rem .58rem;
-  border:1px solid var(--border);
-  color:var(--dim);
-  transition:border-color .2s,color .2s;
-}
-
+.pj-stack{font-family:'JetBrains Mono',monospace;font-size:.57rem;color:var(--cyan);letter-spacing:.1em;}
+.pj-desc{font-size:.8rem;line-height:1.8;color:var(--dim);font-weight:300;}
+.pj-tags{display:flex;flex-wrap:wrap;gap:5px;}
+.pj-tag{font-size:.55rem;font-family:'JetBrains Mono',monospace;letter-spacing:.08em;padding:.22rem .58rem;border:1px solid var(--border);color:var(--dim);transition:border-color .2s,color .2s;}
 .pj-card:hover .pj-tag{border-color:rgba(108,99,255,.25);}
-
-.pj-actions{
-  display:flex;
-  gap:14px;
-  align-items:center;
-  margin-top:4px;
-}
-
-.pl{
-  display:inline-flex;
-  align-items:center;
-  gap:.4rem;
-  font-size:.62rem;
-  letter-spacing:.16em;
-  text-transform:uppercase;
-  color:var(--white);
-  text-decoration:none;
-  font-weight:600;
-  font-family:'Space Grotesk',sans-serif;
-  transition:color .2s;
-}
+.pj-actions{display:flex;gap:14px;align-items:center;margin-top:4px;}
+.pl{display:inline-flex;align-items:center;gap:.4rem;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--white);text-decoration:none;font-weight:600;font-family:'Space Grotesk',sans-serif;transition:color .2s;}
 .pl::after{content:'↗';transition:transform .2s;}
 .pl:hover{color:var(--accent);}
 .pl:hover::after{transform:translate(2px,-2px);}
 .pl.ghost{color:var(--dim);}
 .pl.ghost:hover{color:var(--accent);}
-
-/* Live pulse badge */
-.live-badge{
-  display:inline-flex;
-  align-items:center;
-  gap:5px;
-  font-family:'JetBrains Mono',monospace;
-  font-size:.55rem;
-  letter-spacing:.18em;
-  padding:3px 10px;
-  border:1px solid rgba(0,255,136,.25);
-  color:var(--green);
-  background:rgba(0,255,136,.05);
-  border-radius:2px;
-  width:fit-content;
-}
-.live-dot{
-  width:5px;height:5px;
-  border-radius:50%;
-  background:var(--green);
-  animation:ldot 1.8s ease-in-out infinite;
-}
+.live-badge{display:inline-flex;align-items:center;gap:5px;font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:.18em;padding:3px 10px;border:1px solid rgba(0,255,136,.25);color:var(--green);background:rgba(0,255,136,.05);border-radius:2px;width:fit-content;}
+.live-dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:ldot 1.8s ease-in-out infinite;}
 @keyframes ldot{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.3;transform:scale(.6);}}
-
-/* ════ MOCK UIs ════ */
-
-/* SubTrack */
-.mock-subtrack{
-  width:100%;height:100%;
-  background:#060c16;
-  padding:18px;
-  display:flex;flex-direction:column;gap:11px;
-  font-family:'JetBrains Mono',monospace;
-}
+.mock-subtrack{width:100%;height:100%;background:#060c16;padding:18px;display:flex;flex-direction:column;gap:11px;font-family:'JetBrains Mono',monospace;}
 .m-topbar{display:flex;align-items:center;justify-content:space-between;}
 .m-logo-txt{font-size:11px;color:#6c63ff;}
-.m-live-pill{
-  display:flex;align-items:center;gap:4px;
-  font-size:9px;color:var(--green);
-  border:1px solid rgba(0,255,136,.2);
-  padding:2px 8px;border-radius:2px;
-  background:rgba(0,255,136,.04);
-}
+.m-live-pill{display:flex;align-items:center;gap:4px;font-size:9px;color:var(--green);border:1px solid rgba(0,255,136,.2);padding:2px 8px;border-radius:2px;background:rgba(0,255,136,.04);}
 .m-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;}
 .m-stat-box{background:#0c1828;border:1px solid rgba(255,255,255,.04);border-radius:6px;padding:10px;}
 .m-sv{font-size:17px;font-weight:700;color:#fff;}
@@ -356,34 +264,18 @@ section{padding:6rem 3.5rem;}
 .m-rp{font-size:10px;color:#4a5568;}
 .m-chip{font-size:9px;padding:2px 6px;border-radius:3px;}
 .chip-soon{background:rgba(248,113,113,.12);color:#f87171;}
-.chip-ok  {background:rgba(0,255,136,.1);color:var(--green);}
+.chip-ok{background:rgba(0,255,136,.1);color:var(--green);}
 .chip-warn{background:rgba(251,191,36,.1);color:#fbbf24;}
-
-/* NotMon AI */
-.mock-notmon{
-  width:100%;height:100%;
-  background:#060810;
-  padding:16px;
-  display:flex;flex-direction:column;gap:8px;
-  font-family:'JetBrains Mono',monospace;
-}
+.mock-notmon{width:100%;height:100%;background:#060810;padding:16px;display:flex;flex-direction:column;gap:8px;font-family:'JetBrains Mono',monospace;}
 .m-ai-hdr{font-size:9px;color:var(--cyan);letter-spacing:2px;margin-bottom:2px;}
 .m-bubble{padding:8px 11px;border-radius:8px;font-size:10px;line-height:1.6;max-width:88%;}
-.bub-ai  {background:#0d1a2a;color:#7a8fa8;border-radius:8px 8px 8px 2px;}
-.bub-usr {background:rgba(108,99,255,.12);color:#9b97e8;align-self:flex-end;border-radius:8px 8px 2px 8px;margin-left:auto;}
+.bub-ai{background:#0d1a2a;color:#7a8fa8;border-radius:8px 8px 8px 2px;}
+.bub-usr{background:rgba(108,99,255,.12);color:#9b97e8;align-self:flex-end;border-radius:8px 8px 2px 8px;margin-left:auto;}
 .m-insight-row{display:flex;gap:6px;margin-top:4px;}
 .m-ins{flex:1;background:#0d1a2a;border-radius:6px;padding:9px;border-left:2px solid var(--accent);}
 .m-ins-v{font-size:15px;font-weight:700;color:#fff;}
 .m-ins-l{font-size:8px;color:#4a5568;margin-top:2px;}
-
-/* ML Model */
-.mock-ml{
-  width:100%;height:100%;
-  background:#060810;
-  padding:16px;
-  display:flex;flex-direction:column;gap:9px;
-  font-family:'JetBrains Mono',monospace;
-}
+.mock-ml{width:100%;height:100%;background:#060810;padding:16px;display:flex;flex-direction:column;gap:9px;font-family:'JetBrains Mono',monospace;}
 .m-ml-hdr{font-size:9px;color:#818cf8;letter-spacing:2px;}
 .m-model-row{display:flex;align-items:center;gap:9px;background:#0d1a2a;border-radius:6px;padding:8px 10px;}
 .m-mn{font-size:10px;color:#c8d3e0;flex:1;}
@@ -395,136 +287,20 @@ section{padding:6rem 3.5rem;}
 .m-cc-v{font-size:13px;font-weight:700;color:#fff;}
 .m-cc-l{font-size:8px;color:#4a5568;margin-top:2px;}
 .m-cc.hl .m-cc-v{color:#818cf8;}
-
-/* ── AI RESUME ANALYZER MOCKUP ── */
-.mock-ai {
-  width: 100%; 
-  height: 100%;
-  background: #060810;
-  padding: 24px;
-  display: flex; 
-  flex-direction: column; 
-  gap: 15px;
-  font-family: 'JetBrains Mono', monospace;
-  position: relative;
-}
-
-.m-ai-hdr { 
-  font-size: 9px; 
-  color: var(--accent); 
-  letter-spacing: 2px; 
-}
-
-/* Scanning Animation */
-.m-scan-container {
-  position: relative;
-  width: 50px; 
-  height: 60px;
-  margin: 10px auto;
-  border: 1px solid rgba(108, 99, 255, 0.2);
-  display: flex; 
-  align-items: center; 
-  justify-content: center;
-  background: rgba(108, 99, 255, 0.03);
-}
-
-.m-doc-icon { 
-  font-size: 24px; 
-  opacity: 0.8; 
-}
-
-.m-scan-line {
-  position: absolute;
-  width: 100%; 
-  height: 2px;
-  background: var(--green);
-  box-shadow: 0 0 10px var(--green);
-  top: 0;
-  animation: scanAnim 2.5s ease-in-out infinite;
-}
-
-@keyframes scanAnim {
-  0%, 100% { top: 0; }
-  50% { top: 100%; }
-}
-
-/* Results Score & Feedback */
-.m-analysis-results {
-  display: flex; 
-  align-items: center; 
-  gap: 15px;
-  background: rgba(255, 255, 255, 0.02);
-  padding: 12px; 
-  border-radius: 8px;
-}
-
-.m-score-circle {
-  width: 52px; 
-  height: 52px;
-  border: 2px solid var(--green);
-  border-radius: 50%;
-  display: flex; 
-  flex-direction: column; 
-  align-items: center; 
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.m-score-v { 
-  font-size: 13px; 
-  font-weight: 700; 
-  color: #fff; 
-}
-
-.m-score-l { 
-  font-size: 6px; 
-  color: var(--dim); 
-  text-transform: uppercase; 
-}
-
-.m-feedback-lines { 
-  flex: 1; 
-  display: flex; 
-  flex-direction: column; 
-  gap: 6px; 
-}
-
-.m-f-line { 
-  height: 3px; 
-  border-radius: 2px; 
-  background: #1e293b; 
-  position: relative; 
-  overflow: hidden; 
-}
-
-.m-f-line::after {
-  content: ''; 
-  position: absolute; 
-  left: 0; 
-  top: 0; 
-  height: 100%;
-  background: var(--green); 
-  opacity: 0.4;
-}
-
-/* Skills Pills */
-.m-skills-grid { 
-  display: flex; 
-  flex-wrap: wrap; 
-  gap: 6px; 
-  justify-content: center; 
-}
-
-.m-skill-pill {
-  font-size: 8px; 
-  color: var(--accent);
-  padding: 3px 8px; 
-  border-radius: 4px;
-  background: rgba(108, 99, 255, 0.1);
-  border: 1px solid rgba(108, 99, 255, 0.2);
-}
-
-/* ── contact ── */
+.mock-ai{width:100%;height:100%;background:#060810;padding:24px;display:flex;flex-direction:column;gap:15px;font-family:'JetBrains Mono',monospace;position:relative;}
+.m-scan-container{position:relative;width:50px;height:60px;margin:10px auto;border:1px solid rgba(108,99,255,.2);display:flex;align-items:center;justify-content:center;background:rgba(108,99,255,.03);}
+.m-doc-icon{font-size:24px;opacity:.8;}
+.m-scan-line{position:absolute;width:100%;height:2px;background:var(--green);box-shadow:0 0 10px var(--green);top:0;animation:scanAnim 2.5s ease-in-out infinite;}
+@keyframes scanAnim{0%,100%{top:0;}50%{top:100%;}}
+.m-analysis-results{display:flex;align-items:center;gap:15px;background:rgba(255,255,255,.02);padding:12px;border-radius:8px;}
+.m-score-circle{width:52px;height:52px;border:2px solid var(--green);border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;}
+.m-score-v{font-size:13px;font-weight:700;color:#fff;}
+.m-score-l{font-size:6px;color:var(--dim);text-transform:uppercase;}
+.m-feedback-lines{flex:1;display:flex;flex-direction:column;gap:6px;}
+.m-f-line{height:3px;border-radius:2px;background:#1e293b;position:relative;overflow:hidden;}
+.m-f-line::after{content:'';position:absolute;left:0;top:0;height:100%;background:var(--green);opacity:.4;}
+.m-skills-grid{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;}
+.m-skill-pill{font-size:8px;color:var(--accent);padding:3px 8px;border-radius:4px;background:rgba(108,99,255,.1);border:1px solid rgba(108,99,255,.2);}
 .contact{background:linear-gradient(135deg,rgba(108,99,255,.06),rgba(0,212,255,.03));border-top:1px solid var(--border);}
 .contact-inner{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;}
 .contact-big{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,6vw,6rem);line-height:.88;letter-spacing:.02em;color:var(--white);margin-bottom:1.5rem;}
@@ -543,9 +319,11 @@ footer p{font-size:.59rem;color:#1e2540;font-family:'JetBrains Mono',monospace;l
 .fi.on{opacity:1;transform:none;}
 .mobile-photo-wrap{display:none!important;}
 
+/* ── RESPONSIVE ── */
 @media(max-width:900px){
-  nav{padding:1.2rem 1.5rem;}
-  .nav-links{display:none;}
+  nav{padding:1.1rem 1.5rem;}
+  .nav-links{display:none;}           /* hidden — mobile-nav drawer used instead */
+  .hamburger{display:flex;}           /* show hamburger */
   .hero{grid-template-columns:1fr;}
   .hero-right{display:none;}
   .hero-left{padding:7rem 1.5rem 4rem;}
@@ -554,10 +332,7 @@ footer p{font-size:.59rem;color:#1e2540;font-family:'JetBrains Mono',monospace;l
   .pj-grid{grid-template-columns:1fr;}
   .pj-card.pj-featured{grid-template-columns:1fr;}
   .pj-card.pj-featured .pj-preview{height:240px;min-height:unset;}
-  .pj-card.pj-featured .pj-preview::after{
-    width:100%;height:50px;top:unset;bottom:0;right:0;
-    background:linear-gradient(transparent,rgba(8,10,22,.95));
-  }
+  .pj-card.pj-featured .pj-preview::after{width:100%;height:50px;top:unset;bottom:0;right:0;background:linear-gradient(transparent,rgba(8,10,22,.95));}
   .mobile-photo-wrap{display:flex!important;}
 }
 </style>
@@ -565,6 +340,21 @@ footer p{font-size:.59rem;color:#1e2540;font-family:'JetBrains Mono',monospace;l
 <body>
 <canvas id="particles"></canvas>
 <div id="cur"></div><div id="cur-ring"></div>
+
+<!-- ── MOBILE NAV OVERLAY ── -->
+<div class="mobile-nav-overlay" id="navOverlay" onclick="closeNav()"></div>
+
+<!-- ── MOBILE NAV DRAWER ── -->
+<div class="mobile-nav" id="mobileNav">
+  <div class="mobile-nav-label">Navigation</div>
+  <a href="#about"      onclick="closeNav()">About</a>
+  <a href="#education"  onclick="closeNav()">Education</a>
+  <a href="#experience" onclick="closeNav()">Experience</a>
+  <a href="#skills"     onclick="closeNav()">Skills</a>
+  <a href="#projects"   onclick="closeNav()">Projects</a>
+  <a href="#contact"    onclick="closeNav()">Contact</a>
+  <div class="mobile-nav-footer">© 2026 Ayan Paul</div>
+</div>
 
 <nav>
   <div class="logo"><em>~/</em>Ayan</div>
@@ -576,6 +366,10 @@ footer p{font-size:.59rem;color:#1e2540;font-family:'JetBrains Mono',monospace;l
     <li><a href="#projects">Projects</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
+  <!-- Hamburger button (mobile only) -->
+  <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
 
 <section class="hero" style="padding:0;">
@@ -721,15 +515,9 @@ footer p{font-size:.59rem;color:#1e2540;font-family:'JetBrains Mono',monospace;l
   </div>
 </section>
 
-<!-- ════════════════════════════════════════
-     PROJECTS — UPGRADED WITH LIVE MOCK UIs
-════════════════════════════════════════ -->
 <section class="projects" id="projects">
   <div class="sh fi"><span class="sn">05 —</span><h2 class="st">Projects</h2><span class="sl"></span></div>
-
   <div class="pj-grid fi">
-
-    <!-- ── PROJECT 01: SubTrack FEATURED ── -->
     <div class="pj-card pj-featured">
       <div class="pj-preview">
         <div class="pj-preview-inner">
@@ -744,35 +532,14 @@ footer p{font-size:.59rem;color:#1e2540;font-family:'JetBrains Mono',monospace;l
               <div class="m-stat-box"><div class="m-sv c-red">3</div><div class="m-sl">Renewing soon</div></div>
             </div>
             <div class="m-list">
-              <div class="m-row">
-                <div class="m-dot" style="background:#6c63ff"></div>
-                <div class="m-rn">Netflix Premium</div>
-                <div class="m-rp">₹649/mo</div>
-                <span class="m-chip chip-soon">1 day</span>
-              </div>
-              <div class="m-row">
-                <div class="m-dot" style="background:#00d4ff"></div>
-                <div class="m-rn">Spotify Family</div>
-                <div class="m-rp">₹179/mo</div>
-                <span class="m-chip chip-ok">Active</span>
-              </div>
-              <div class="m-row">
-                <div class="m-dot" style="background:#fbbf24"></div>
-                <div class="m-rn">Adobe Creative Cloud</div>
-                <div class="m-rp">₹1,675/mo</div>
-                <span class="m-chip chip-warn">7 days</span>
-              </div>
-              <div class="m-row">
-                <div class="m-dot" style="background:#f87171"></div>
-                <div class="m-rn">GitHub Pro</div>
-                <div class="m-rp">₹749/mo</div>
-                <span class="m-chip chip-soon">3 days</span>
-              </div>
+              <div class="m-row"><div class="m-dot" style="background:#6c63ff"></div><div class="m-rn">Netflix Premium</div><div class="m-rp">₹649/mo</div><span class="m-chip chip-soon">1 day</span></div>
+              <div class="m-row"><div class="m-dot" style="background:#00d4ff"></div><div class="m-rn">Spotify Family</div><div class="m-rp">₹179/mo</div><span class="m-chip chip-ok">Active</span></div>
+              <div class="m-row"><div class="m-dot" style="background:#fbbf24"></div><div class="m-rn">Adobe Creative Cloud</div><div class="m-rp">₹1,675/mo</div><span class="m-chip chip-warn">7 days</span></div>
+              <div class="m-row"><div class="m-dot" style="background:#f87171"></div><div class="m-rn">GitHub Pro</div><div class="m-rp">₹749/mo</div><span class="m-chip chip-soon">3 days</span></div>
             </div>
           </div>
         </div>
       </div>
-
       <div class="pj-info">
         <div class="pj-num">Project 01</div>
         <div class="pj-name">SubTrack</div>
@@ -789,75 +556,45 @@ footer p{font-size:.59rem;color:#1e2540;font-family:'JetBrains Mono',monospace;l
       </div>
     </div>
 
-    <!-- ── PROJECT 02: NotMon AI ── -->
     <div class="pj-card">
-  <div class="pj-preview">
-    <div class="pj-preview-inner">
-      <div class="mock-notmon">
-        <div class="m-ai-hdr">NOTMON AI · SMART NOTE GENERATOR</div>
-        
-        <div class="m-editor-window" style="background: rgba(13, 26, 42, 0.5); border-radius: 8px; padding: 12px; border: 1px solid rgba(0, 212, 255, 0.1);">
-          <div style="font-size: 11px; color: #fff; margin-bottom: 8px; border-bottom: 1px solid #1e293b; padding-bottom: 4px;">📝 Project_Architecture.md</div>
-          <div style="font-size: 9px; color: #7a8fa8; line-height: 1.5;">
-            The MERN stack provides a robust foundation for... 
-            <span style="background: rgba(108, 99, 255, 0.2); color: var(--accent); padding: 0 2px;">[AI Generating Summary]</span>
+      <div class="pj-preview">
+        <div class="pj-preview-inner">
+          <div class="mock-notmon">
+            <div class="m-ai-hdr">NOTMON AI · SMART NOTE GENERATOR</div>
+            <div class="m-editor-window" style="background:rgba(13,26,42,.5);border-radius:8px;padding:12px;border:1px solid rgba(0,212,255,.1);">
+              <div style="font-size:11px;color:#fff;margin-bottom:8px;border-bottom:1px solid #1e293b;padding-bottom:4px;">📝 Project_Architecture.md</div>
+              <div style="font-size:9px;color:#7a8fa8;line-height:1.5;">The MERN stack provides a robust foundation for... <span style="background:rgba(108,99,255,.2);color:var(--accent);padding:0 2px;">[AI Generating Summary]</span></div>
+            </div>
+            <div class="m-insight-row">
+              <div class="m-ins" style="border-left-color:var(--cyan);"><div class="m-ins-v">Summary</div><div class="m-ins-l">AI generated</div></div>
+              <div class="m-ins" style="border-left-color:var(--green);"><div class="m-ins-v">Tags</div><div class="m-ins-l">Auto-categorized</div></div>
+            </div>
+            <div style="display:flex;gap:8px;margin-top:5px;">
+              <div style="height:4px;flex:1;background:var(--accent);border-radius:2px;opacity:.6;"></div>
+              <div style="height:4px;flex:1;background:var(--cyan);border-radius:2px;opacity:.4;"></div>
+              <div style="height:4px;width:30%;background:#1e293b;border-radius:2px;"></div>
+            </div>
           </div>
-        </div>
-
-        <div class="m-insight-row">
-          <div class="m-ins" style="border-left-color: var(--cyan);">
-            <div class="m-ins-v">Summary</div>
-            <div class="m-ins-l">AI generated</div>
-          </div>
-          <div class="m-ins" style="border-left-color: var(--green);">
-            <div class="m-ins-v">Tags</div>
-            <div class="m-ins-l">Auto-categorized</div>
-          </div>
-        </div>
-
-        <div style="display: flex; gap: 8px; margin-top: 5px;">
-           <div style="height: 4px; flex: 1; background: var(--accent); border-radius: 2px; opacity: 0.6;"></div>
-           <div style="height: 4px; flex: 1; background: var(--cyan); border-radius: 2px; opacity: 0.4;"></div>
-           <div style="height: 4px; width: 30%; background: #1e293b; border-radius: 2px;"></div>
         </div>
       </div>
+      <div class="pj-info">
+        <div class="pj-num">Project 02</div>
+        <div class="pj-name">NotMon AI</div>
+        <div class="pj-stack">React · Node.js · Google Gemini API · Tailwind</div>
+        <div class="pj-desc">An AI-powered note generation and productivity tool. Automatically generates structured notes, summaries, and action items from raw text using Large Language Models.</div>
+        <div class="pj-tags"><span class="pj-tag">MERN</span><span class="pj-tag">NLP</span><span class="pj-tag">AI Generation</span><span class="pj-tag">Firebase</span></div>
+        <div class="pj-actions"><a href="https://github.com/ayanpaul14" target="_blank" rel="noopener" class="pl ghost">GitHub</a></div>
+      </div>
     </div>
-  </div>
-  
-  <div class="pj-info">
-    <div class="pj-num">Project 02</div>
-    <div class="pj-name">NotMon AI</div>
-    <div class="pj-stack">React · Node.js · Google Gemini API · Tailwind</div>
-    <div class="pj-desc">An AI-powered note generation and productivity tool. Automatically generates structured notes, summaries, and action items from raw text using Large Language Models. </div>
-    <div class="pj-tags">
-      <span class="pj-tag">MERN</span>
-      <span class="pj-tag">NLP</span>
-      <span class="pj-tag">AI Generation</span>
-      <span class="pj-tag">Firebase</span>
-    </div>
-    <div class="pj-actions">
-      <a href="https://github.com/ayanpaul14" target="_blank" rel="noopener" class="pl ghost">GitHub</a>
-    </div>
-  </div>
-</div>
 
-<div class="pj-card">
+    <div class="pj-card">
       <div class="pj-preview">
         <div class="pj-preview-inner">
           <div class="mock-ml">
             <div class="m-ml-hdr">VOTING SYSTEM · CLOUD NATIVE</div>
-            <div class="m-model-row">
-              <div class="m-mn">Candidate A</div>
-              <div class="m-bar"><div class="m-fill" style="width:65%; background: #00ff88;"></div></div>
-              <div class="m-av">428 Votes</div>
-            </div>
-            <div class="m-model-row">
-              <div class="m-mn">Candidate B</div>
-              <div class="m-bar"><div class="m-fill" style="width:35%; background: #6c63ff;"></div></div>
-              <div class="m-av">214 Votes</div>
-            </div>
-            
-            <div style="font-size:9px;color:#2d3a4a;font-family:'JetBrains Mono',monospace; margin-top: 15px;">SYSTEM STATUS — SECURE</div>
+            <div class="m-model-row"><div class="m-mn">Candidate A</div><div class="m-bar"><div class="m-fill" style="width:65%;background:#00ff88;"></div></div><div class="m-av">428 Votes</div></div>
+            <div class="m-model-row"><div class="m-mn">Candidate B</div><div class="m-bar"><div class="m-fill" style="width:35%;background:#6c63ff;"></div></div><div class="m-av">214 Votes</div></div>
+            <div style="font-size:9px;color:#2d3a4a;font-family:'JetBrains Mono',monospace;margin-top:15px;">SYSTEM STATUS — SECURE</div>
             <div class="m-conf">
               <div class="m-cc hl"><div class="m-cc-v">Auth</div><div class="m-cc-l">Verified</div></div>
               <div class="m-cc"><div class="m-cc-v">DB</div><div class="m-cc-l">Encrypted</div></div>
@@ -872,9 +609,7 @@ footer p{font-size:.59rem;color:#1e2540;font-family:'JetBrains Mono',monospace;l
         <div class="pj-name">Online Voting Application</div>
         <div class="pj-stack">MongoDB · Express.js · React · Node.js</div>
         <div class="pj-desc">A secure, cloud-native MERN stack application featuring real-time results and robust authentication for digital elections. Built with a focus on scalability and security.</div>
-        <div class="pj-tags">
-          <span class="pj-tag">MERN Stack</span><span class="pj-tag">Cloud Native</span><span class="pj-tag">Bcrypt</span><span class="pj-tag">JWT</span>
-        </div>
+        <div class="pj-tags"><span class="pj-tag">MERN Stack</span><span class="pj-tag">Cloud Native</span><span class="pj-tag">Bcrypt</span><span class="pj-tag">JWT</span></div>
         <div class="pj-actions">
           <a href="https://voting-app-azure-gamma.vercel.app/" target="_blank" rel="noopener" class="pl">View Live</a>
           <a href="https://github.com/ayanpaul14" target="_blank" rel="noopener" class="pl ghost">GitHub</a>
@@ -887,15 +622,9 @@ footer p{font-size:.59rem;color:#1e2540;font-family:'JetBrains Mono',monospace;l
         <div class="pj-preview-inner">
           <div class="mock-ai">
             <div class="m-ai-hdr">AI RESUME ANALYZER · GOOGLE GEMINI</div>
-            <div class="m-scan-container">
-              <div class="m-doc-icon">📄</div>
-              <div class="m-scan-line"></div>
-            </div>
+            <div class="m-scan-container"><div class="m-doc-icon">📄</div><div class="m-scan-line"></div></div>
             <div class="m-analysis-results">
-              <div class="m-score-circle">
-                <span class="m-score-v">85%</span>
-                <span class="m-score-l">ATS Match</span>
-              </div>
+              <div class="m-score-circle"><span class="m-score-v">85%</span><span class="m-score-l">ATS Match</span></div>
               <div class="m-feedback-lines">
                 <div class="m-f-line" style="width:100%;"></div>
                 <div class="m-f-line" style="width:85%;"></div>
@@ -903,11 +632,7 @@ footer p{font-size:.59rem;color:#1e2540;font-family:'JetBrains Mono',monospace;l
               </div>
             </div>
             <div class="m-skills-grid">
-              <div class="m-skill-pill">React.js</div>
-              <div class="m-skill-pill">Python</div>
-              <div class="m-skill-pill">NLP</div>
-              <div class="m-skill-pill">Streamlit</div>
-              <div class="m-skill-pill">Google Gemini AI</div>
+              <div class="m-skill-pill">React.js</div><div class="m-skill-pill">Python</div><div class="m-skill-pill">NLP</div><div class="m-skill-pill">Streamlit</div><div class="m-skill-pill">Google Gemini AI</div>
             </div>
           </div>
         </div>
@@ -917,16 +642,11 @@ footer p{font-size:.59rem;color:#1e2540;font-family:'JetBrains Mono',monospace;l
         <div class="pj-name">AI Resume Analyzer</div>
         <div class="pj-stack">Python · Google Gemini API · Streamlit</div>
         <div class="pj-desc">An intelligent career tool that parses resumes to provide real-time ATS compatibility scores, automated skill gap analysis, and professional optimization feedback based on industry standards.</div>
-        <div class="pj-tags">
-          <span class="pj-tag">Python</span><span class="pj-tag">Google Gemini</span><span class="pj-tag">NLP</span><span class="pj-tag">AI/ML</span>
-        </div>
-        <div class="pj-actions">
-          <a href="https://github.com/ayanpaul14" target="_blank" rel="noopener" class="pl ghost">GitHub</a>
-        </div>
+        <div class="pj-tags"><span class="pj-tag">Python</span><span class="pj-tag">Google Gemini</span><span class="pj-tag">NLP</span><span class="pj-tag">AI/ML</span></div>
+        <div class="pj-actions"><a href="https://github.com/ayanpaul14" target="_blank" rel="noopener" class="pl ghost">GitHub</a></div>
       </div>
     </div>
-
-  </div><!-- /pj-grid -->
+  </div>
 </section>
 
 <section class="contact" id="contact">
@@ -946,7 +666,7 @@ footer p{font-size:.59rem;color:#1e2540;font-family:'JetBrains Mono',monospace;l
 </section>
 
 <footer>
-<p>© 2026 <span class="name-highlight">Ayan Paul</span>. All rights reserved.</p>
+  <p>© 2026 Ayan Paul. All rights reserved.</p>
 </footer>
 
 <script>
@@ -1066,6 +786,32 @@ document.querySelectorAll('a,button,.pj-card,.sk-card,.edu-card').forEach(functi
 /* ── Scroll reveal ── */
 var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('on');obs.unobserve(e.target);}});},{threshold:.08});
 document.querySelectorAll('.fi').forEach(function(f){obs.observe(f);});
+
+/* ── Hamburger / Mobile Nav ── */
+var hamburger=document.getElementById('hamburger');
+var mobileNav=document.getElementById('mobileNav');
+var navOverlay=document.getElementById('navOverlay');
+var navOpen=false;
+
+function openNav(){
+  navOpen=true;
+  hamburger.classList.add('open');
+  mobileNav.classList.add('open');
+  navOverlay.classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeNav(){
+  navOpen=false;
+  hamburger.classList.remove('open');
+  mobileNav.classList.remove('open');
+  navOverlay.classList.remove('open');
+  document.body.style.overflow='';
+}
+hamburger.addEventListener('click',function(){
+  navOpen ? closeNav() : openNav();
+});
+// Close on Escape
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeNav();});
 </script>
 </body>
 </html>
